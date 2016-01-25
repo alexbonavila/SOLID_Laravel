@@ -10,16 +10,46 @@ namespace App\Repositories;
 
 
 use App\User;
+use Illuminate\Database\Eloquent\Model;
+use Mockery\CountValidator\Exception;
 
-class UserRepository implements RepositoryInterface
+abstract class UserRepository implements RepositoryInterface
 {
+
+    protected $model;
+
+    /**
+     * UserRepository constructor.
+     * @param $model
+     *
+     * Type-Hinting
+     *
+     */
+    public function __construct($model)
+    {
+        $this->model = $this->makeModel();
+    }
+
+    abstract function model();
+
+
+    public function makeModel()
+    {
+        $model=App::make($this->model());
+
+        if($model instanceof Model){
+            throw new Exception;
+        }
+
+        return $model;
+    }
 
     /**
      * @return mixed
      */
     public function all()
     {
-        return User::all();
+        return $this->model::all();
     }
 
     /**
