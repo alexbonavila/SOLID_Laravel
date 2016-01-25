@@ -32,10 +32,11 @@ Route::group(['middleware' => ['web']], function () {
 
 });
 
-Route::group(['middleware' => 'web'], function () {
+Route::group(['middleware' => ['web']], function () {
     Route::auth();
 
     Route::get('/home', 'HomeController@index');
 });
 
-
+App::bind(App\Repositories\RepositoryInterface::class,
+    App\Repositories\InvoiceRepository::class);

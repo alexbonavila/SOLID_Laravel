@@ -3,14 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Invoices;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
+
 class InvoicesController extends Controller
 {
+
+    protected $repo;
+
+    /**
+     * InvoicesController constructor.
+     * @param $repo
+     */
+    public function __construct($repo)
+    {
+        $this->repo = $repo;
+    }
+
+
     //
     public function index()
     {
