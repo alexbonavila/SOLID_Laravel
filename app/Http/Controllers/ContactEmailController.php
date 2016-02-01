@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendSubscriptonEmail;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -11,12 +12,12 @@ class ContactEmailController extends Controller
 {
     public function send(Request $request)
     {
-        $request->session()->flash(
-            'flash_message',
-            'All okk!!'
-        );
-
-
+        Flash::message('Email sent!');
         return redirect()->route('welcome');
+
+    }
+    public function sendEmail(){
+
+        $this->dispatch(new SendSubscriptonEmail());
     }
 }
