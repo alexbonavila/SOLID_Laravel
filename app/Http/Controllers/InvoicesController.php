@@ -2,50 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Invoices;
-
-use Illuminate\Http\Request;
+use App\Repositories\InvoiceRepository;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-
+use App\Repositories\RepositoryInterface;
+use App\Transformers\InvoicesTransformer;
 
 class InvoicesController extends Controller
 {
-
+    /**
+     * @var InvoiceRepository
+     */
     protected $repo;
 
     /**
      * InvoicesController constructor.
      * @param $repo
      */
-    public function __construct($repo)
+    public function __construct(RepositoryInterface $repo, InvoicesTransformer $invoicesTransform)
     {
+        $this->invoicesTransform = $invoicesTransform;
         $this->repo = $repo;
     }
 
-
-    //
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-        if(!Auth::check()){
-            return "Forbidden";
-        }
-
-        $invoiceRepo = new invoiceRepository();
-
-        $database_invoices =$this->getAllInvoicesFromDatabase();
-
-        $invoices = $this->transform($database_invoices);
+        $invoices = $this->invoicesTransform->transform($this->repo->all());
 
         return view('invoices',compact('invoices'));
-    }
-
-
-
-    private function transform($database_invoices)
-    {
-        return $database_invoices;
     }
 }
