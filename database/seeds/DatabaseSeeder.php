@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(UserTableSeeder::class);
         $faker=Faker\Factory::create();
         $this->seedInvoices($faker);
+        $this->seedUserTable();
     }
 
     private function seedInvoices($faker){
@@ -26,4 +27,14 @@ class DatabaseSeeder extends Seeder
             $invoice->save();
         }
     }
+
+    public function seedUserTable()
+    {
+        $user = new User();
+        $user->name = 'Admin';
+        $user->email = 'admin@mail.com';
+        $user->password =  bcrypt(env('PASSWORD_ADMIN', '1234'));
+        $user->save();
+    }
+    
 }
